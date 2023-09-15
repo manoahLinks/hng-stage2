@@ -1,10 +1,38 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import { Alert, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import React, {useState, useEffect} from 'react'
 import { AppScreen } from '../components'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import colors from '../config/colors'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const HomeScreen = ({navigation}) => {
+    
+    const [user, setUser] = useState('')
+
+    useEffect(() => {
+        // Retrieve the user's name and email from AsyncStorage
+        const getData = async () => {
+          try {
+            const user = await AsyncStorage.getItem('user');
+            
+            if (!user) {
+                await AsyncStorage.setItem('user', JSON.stringify({
+                    email: 'manoahluka@gmail.com',
+                    fullName: 'manoah luka k',
+                    github: 'github.com/manoahLinks'
+                }))
+                const user = await AsyncStorage.getItem('user');
+                setUser(JSON.parse(user))
+                Alert.alert('user', JSON.stringify(user))
+            }
+          } catch (error) {
+            Alert.alert('error', JSON.stringify(error.message))
+          }
+        };
+    
+        getData();
+      }, []);
+
   return (
     <AppScreen>
         <View>
@@ -18,7 +46,7 @@ const HomeScreen = ({navigation}) => {
                     </TouchableOpacity>
                 </View>
                 <View style={styles.tagContainer}>
-                    <Text style={styles.nameTag}>Manoah Luka</Text>
+                    <Text style={styles.nameTag}>{user !== '' && user.email}</Text>
                     <Text style={{color: 'white'}}>Mobile developer intern at HNG</Text>
                 </View>
                 
