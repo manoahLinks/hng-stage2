@@ -1,18 +1,16 @@
 import { StyleSheet, Button, Text, TextInput, View, Alert } from 'react-native'
 import React, {useState} from 'react'
+import {useNavigation} from '@react-navigation/native';
 import { AppScreen } from '../components'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import colors from '../config/colors'
 
-const EditScreen = () => {
+const EditScreen = ({ route }) => {
 
-    const [formData, setFormData] = useState({
-        fullname: '',
-        email: '',
-        slack: '',
-        github: '',
-        bio: ''
-      });
+    const {user} = route.params;
+    const navigation = useNavigation()
+
+    const [formData, setFormData] = useState(user);
     
       const handleInputChange = (field, text) => {
         setFormData({
@@ -21,29 +19,32 @@ const EditScreen = () => {
         });
       };
     
-      const handleSubmit = () => {
-        Alert.alert('Form Data', JSON.stringify(formData, null, 2));
+      const handleSubmit = async () => {
+        try {
+            
+            await AsyncStorage.removeItem('user')
+
+            await AsyncStorage.setItem('user', JSON.stringify(formData), ()=>{
+                navigation.navigate('Home')
+            })
+            
+        } catch (error) {
+            Alert.alert('An error has ocurred');    
+        }
+        
       };
 
 
   return (
     <AppScreen>
         <View style={styles.formContainer}>
-            <View style={styles.inputContainer}>
-                <Text style={styles.label}>Email</Text>
-                <TextInput 
-                    style={styles.input}
-                    value={formData.email}
-                    onChangeText={(text) =>  handleInputChange('email', text)}
-                />
-            </View>
-
+        
             <View style={styles.inputContainer}>
                 <Text style={styles.label}>Full name</Text>
                 <TextInput 
                     style={styles.input}
-                    value={formData.fullname}
-                    onChangeText={(text) =>  handleInputChange('fullname', text)}
+                    value={formData.fullName}
+                    onChangeText={(text) =>  handleInputChange('fullName', text)}
                 />
             </View>
 
@@ -109,7 +110,8 @@ const styles = StyleSheet.create({
         borderColor: colors.secondaryText, 
         borderWidth: 0.5,
         borderRadius: 3, 
-        color: colors.secondaryText
+        color: colors.secondaryText,
+        paddingHorizontal: 5
     },
 
     button: {
