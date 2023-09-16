@@ -48,38 +48,36 @@ const HomeScreen = ({navigation}) => {
 
   return (
     <AppScreen>
-        <View>
-                
+        <View>    
             <View style={styles.detailsContainer}>
                 <View >
                     <Image source={require('../assets/profile.jpeg')} style={{width: 150, height: 150, borderRadius: 100}}/>
-                    <TouchableOpacity onPress={()=> {navigation.navigate('Edit-cv', {user: user})}} style={{display: 'flex', flexDirection:'row', marginLeft: 50}}>  
+                    <Text style={styles.nameTag}>{user.fullName}</Text>
+                </View>
+                <View style={styles.bioContainer}>
+                    <TouchableOpacity onPress={()=> {navigation.navigate('Edit-cv', {user: user})}} style={{display: 'flex', flexDirection:'row', alignSelf: 'flex-end'}}>  
                         <Icon name='edit' size={20} color={colors.secondaryText} />
                         <Text style={{color: colors.secondaryText}}>edit</Text>
                     </TouchableOpacity>
-                </View>
-                <View style={styles.tagContainer}>
-                    <Text style={styles.nameTag}>{user.fullName}</Text>
-                    <Text style={{color: 'white'}}>Mobile developer intern at HNG</Text>
-                </View>
-                
-                <View style={[styles.info]}>
-                    <View style={styles.infoItem}>
-                        <Icon name='slack' color={'white'} size={20}/>
-                        <Text style={styles.bioText}>{user.slack}</Text>
+                    
+                    <View style={[styles.info]}>
+                        <View style={styles.infoItem}>
+                            <Icon name='slack' color={'white'} size={20}/>
+                            <Text style={styles.bioText}>{user.slack}</Text>
+                        </View>
+
+                        <View style={styles.infoItem}>
+                            <Icon name='github' color={'white'} size={20}/>
+                            <Text style={styles.bioText}>{user.github}</Text>
+                        </View>
                     </View>
 
-                    <View style={styles.infoItem}>
-                        <Icon name='github' color={'white'} size={20}/>
-                        <Text style={styles.bioText}>{user.github}</Text>
-                    </View>
-                </View>
-
-                <View style={styles.bioContainer}>
                     <View>
-                        <Text style={{fontSize: 18, color: colors.accent}}>👨🏽‍💻  Bio</Text>
+                        <View>
+                            <Text style={{fontSize: 18, color: colors.accent}}>👨🏽‍💻  Bio</Text>
+                        </View>
+                        <Text style={styles.bioText}>{user.bio}</Text>
                     </View>
-                    <Text style={styles.bioText}>{user.bio}</Text>
                 </View>
             </View>
 
@@ -110,12 +108,6 @@ const styles = StyleSheet.create({
         color: colors.accent
     },
 
-    tagContainer: {
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center'
-    },  
-
     info: {
         display: 'flex',
         gap: 10
@@ -138,7 +130,7 @@ const styles = StyleSheet.create({
         padding: 10,
         borderRadius: 10,
         borderWidth: 0.5,
-        gap: 15,
+        gap: 25,
         borderColor: colors.divider,
         backgroundColor: colors.secondary
     }
