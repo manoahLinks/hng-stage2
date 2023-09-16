@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         borderWidth: 0.5,
         gap: 25,
-        borderColor: colors.divider,
+        borderColor: colors.accent,
         backgroundColor: colors.secondary
     }
 })
